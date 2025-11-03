@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "ROS9GaGoztBNiGuSNsZJkHpws6rLO9aOXN/JcuSyysY=",
+  "Source": "PharmaLink.Api",
+  "BasePath": "_content/PharmaLink.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
