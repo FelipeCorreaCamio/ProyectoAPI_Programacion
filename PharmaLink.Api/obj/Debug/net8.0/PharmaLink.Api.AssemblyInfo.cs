@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PharmaLink.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b5aaa9a72f877cfb3ad90918b44e79f669c18994")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e16ac79d09acaa8544da6f56d5b9210f86b618e4")]
 [assembly: System.Reflection.AssemblyProductAttribute("PharmaLink.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PharmaLink.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

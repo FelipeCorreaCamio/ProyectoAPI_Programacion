@@ -1,0 +1,79 @@
+{
+  "info": {
+    "name": "PharmaLink - Integracion",
+    "description": "Colección para pedidos/reposiciones y validación de recetas",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:5000" },
+    { "key": "api_key", "value": "TU_API_KEY_AQUI" },
+    { "key": "hospital_api_key", "value": "HOSPITAL_API_KEY_AQUI" }
+  ],
+  "item": [
+    {
+      "name": "Reposiciones - Enviar pedido",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{api_key}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pedidoId\": \"HOSP12345\",\n  \"hospitalId\": \"HOSP001\",\n  \"fechaPedido\": \"2025-11-04T10:30:00Z\",\n  \"items\": [\n    {\n      \"codigo\": \"INS-001\",\n      \"nombre\": \"Gasa estéril\",\n      \"presentacion\": \"10x10 cm\",\n      \"cantidadSolicitada\": 50,\n      \"unidad\": \"unidad\",\n      \"prioridad\": \"normal\"\n    }\n  ],\n  \"contacto\": { \"nombre\": \"María Perez\", \"telefono\": \"+5491100000000\" }\n}"
+        },
+        "url": { "raw": "{{base_url}}/api/reposiciones/pedidos" }
+      }
+    },
+    {
+      "name": "Reposiciones - Confirmacion envio",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{api_key}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pedidoId\": \"HOSP12345\",\n  \"fechaEnvio\": \"2025-11-05T14:45:00Z\",\n  \"items\": [ { \"codigo\": \"INS-001\", \"cantidadEnviada\": 40 } ],\n  \"numeroRemito\": \"REMIT-0001\"\n}"
+        },
+        "url": { "raw": "{{base_url}}/api/reposiciones/confirmacion" }
+      }
+    },
+    {
+      "name": "Recetas - Validar receta (nosotros -> hospital)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{hospital_api_key}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{ \"codigoReceta\": \"REC-2025-0001\" }" },
+        "url": { "raw": "{{base_url}}/api/recetas/validate" }
+      }
+    },
+    {
+      "name": "Recetas - Notify (hospital -> nosotros)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{api_key}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"codigoReceta\": \"REC-2025-0001\",\n  \"paciente\": { \"id\": \"P123\", \"nombre\": \"Juan Perez\" },\n  \"medicamentos\": [ { \"codigo\": \"MED-001\", \"cantidad\": 10 } ]\n}"
+        },
+        "url": { "raw": "{{base_url}}/api/recetas/notify" }
+      }
+    },
+    {
+      "name": "Get medicamentos (test)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/api/medicamentos" }
+      }
+    }
+  ]
+}
