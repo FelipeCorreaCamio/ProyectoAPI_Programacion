@@ -12,5 +12,6 @@ namespace PharmaLink.Data
 
         public DbSet<Medicamento> Medicamentos { get; set; }
         public DbSet<Insumo> Insumos { get; set; }
+    public DbSet<Dispensacion> Dispensaciones { get; set; }
     }
 }
