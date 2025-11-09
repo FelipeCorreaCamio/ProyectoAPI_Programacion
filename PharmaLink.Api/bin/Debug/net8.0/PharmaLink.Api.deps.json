@@ -10,6 +10,7 @@
         "dependencies": {
           "Microsoft.AspNetCore.OpenApi": "8.0.21",
           "Microsoft.EntityFrameworkCore": "8.0.21",
+          "Microsoft.EntityFrameworkCore.InMemory": "8.0.21",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.21",
           "Swashbuckle.AspNetCore": "6.6.2"
         },
@@ -156,6 +157,17 @@
         }
       },
       "Microsoft.EntityFrameworkCore.Analyzers/8.0.21": {},
+      "Microsoft.EntityFrameworkCore.InMemory/8.0.21": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "8.0.21"
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.EntityFrameworkCore.InMemory.dll": {
+            "assemblyVersion": "8.0.21.0",
+            "fileVersion": "8.0.2125.47512"
+          }
+        }
+      },
       "Microsoft.EntityFrameworkCore.Relational/8.0.21": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "8.0.21",
@@ -686,6 +698,13 @@
       "sha512": "sha512-MGX1NkW44ju8yIzfg+ao/YITHyA23EThp8HfuNp5zaqihL+kNORVMUUnewBjakiCq0938bzFKu9HRmZsXS4b2g==",
       "path": "microsoft.entityframeworkcore.analyzers/8.0.21",
       "hashPath": "microsoft.entityframeworkcore.analyzers.8.0.21.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.InMemory/8.0.21": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rw+LgXOJnzlhhyucV/S6nq5HVDeU1kCzVNws5sNNnIiTkSHLCauimCOUOdFrbnJsbuy6WtA6Er5QS2wY6idORg==",
+      "path": "microsoft.entityframeworkcore.inmemory/8.0.21",
+      "hashPath": "microsoft.entityframeworkcore.inmemory.8.0.21.nupkg.sha512"
     },
     "Microsoft.EntityFrameworkCore.Relational/8.0.21": {
       "type": "package",

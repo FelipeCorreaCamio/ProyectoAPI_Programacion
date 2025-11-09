@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\pipep\\Documents\\CosasUAP\\2doAño-SegundoCuatrimestre\\programacion2\\ProyectoAPI_Programacion\\PharmaLink.Api\\PharmaLink.Api.csproj": {}
+    "C:\\Users\\pipep\\Documents\\CosasUAP\\2doAño-SegundoCuatrimestre\\programacion2\\ProyectoAPI_Programacion\\PharmaLink.Api\\PharmaLink.Api.csproj": {}
   },
   "projects": {
-    "c:\\Users\\pipep\\Documents\\CosasUAP\\2doAño-SegundoCuatrimestre\\programacion2\\ProyectoAPI_Programacion\\PharmaLink.Api\\PharmaLink.Api.csproj": {
+    "C:\\Users\\pipep\\Documents\\CosasUAP\\2doAño-SegundoCuatrimestre\\programacion2\\ProyectoAPI_Programacion\\PharmaLink.Api\\PharmaLink.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\pipep\\Documents\\CosasUAP\\2doAño-SegundoCuatrimestre\\programacion2\\ProyectoAPI_Programacion\\PharmaLink.Api\\PharmaLink.Api.csproj",
+        "projectUniqueName": "C:\\Users\\pipep\\Documents\\CosasUAP\\2doAño-SegundoCuatrimestre\\programacion2\\ProyectoAPI_Programacion\\PharmaLink.Api\\PharmaLink.Api.csproj",
         "projectName": "PharmaLink.Api",
-        "projectPath": "c:\\Users\\pipep\\Documents\\CosasUAP\\2doAño-SegundoCuatrimestre\\programacion2\\ProyectoAPI_Programacion\\PharmaLink.Api\\PharmaLink.Api.csproj",
+        "projectPath": "C:\\Users\\pipep\\Documents\\CosasUAP\\2doAño-SegundoCuatrimestre\\programacion2\\ProyectoAPI_Programacion\\PharmaLink.Api\\PharmaLink.Api.csproj",
         "packagesPath": "C:\\Users\\pipep\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\pipep\\Documents\\CosasUAP\\2doAño-SegundoCuatrimestre\\programacion2\\ProyectoAPI_Programacion\\PharmaLink.Api\\obj\\",
+        "outputPath": "C:\\Users\\pipep\\Documents\\CosasUAP\\2doAño-SegundoCuatrimestre\\programacion2\\ProyectoAPI_Programacion\\PharmaLink.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pipep\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -48,6 +48,10 @@
               "version": "[8.0.21, )"
             },
             "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.21, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
               "target": "Package",
               "version": "[8.0.21, )"
             },

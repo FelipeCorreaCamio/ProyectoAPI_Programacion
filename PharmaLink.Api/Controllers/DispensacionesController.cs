@@ -103,6 +103,20 @@ namespace PharmaLink.Api.Controllers
             using var tx = await _context.Database.BeginTransactionAsync();
             try
             {
+                // re-obtener el medicamento dentro de la transacción para evitar TOCTOU
+                var medEnTransaccion = await _context.Medicamentos.FindAsync(dto.MedicamentoId);
+                if (medEnTransaccion == null)
+                {
+                    await tx.RollbackAsync();
+                    return NotFound(new ErrorResponse { Code = "not_found", Message = "Medicamento no encontrado" });
+                }
+
+                if (medEnTransaccion.Stock < dto.Cantidad)
+                {
+                    await tx.RollbackAsync();
+                    return BadRequest(new ErrorResponse { Code = "insufficient_stock", Message = "Stock insuficiente" });
+                }
+
                 var dispensacion = new Dispensacion
                 {
                     CodigoReceta = dto.CodigoReceta,
@@ -113,7 +127,7 @@ namespace PharmaLink.Api.Controllers
                 };
 
                 _context.Dispensaciones.Add(dispensacion);
-                medicamento.Stock -= dto.Cantidad;
+                medEnTransaccion.Stock -= dto.Cantidad;
                 await _context.SaveChangesAsync();
                 await tx.CommitAsync();
 

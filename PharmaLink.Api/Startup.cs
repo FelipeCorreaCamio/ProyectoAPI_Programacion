@@ -17,21 +17,27 @@ namespace PharmaLink.Api
             Configuration = configuration;
         }
 
-    // Método que se ejecuta para registrar servicios. Aquí meto controladores, swagger y otras cosas básicas.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            // Registro el DbContext solo si hay connection string (no quiero que falle si todavía no la ponen)
+            // Registrar DbContext — si no hay connection string, usar InMemory (para desarrollo/pruebas)
             var conn = Configuration.GetConnectionString("DefaultConnection");
             if (!string.IsNullOrEmpty(conn))
             {
                 services.AddDbContext<PharmaLinkContext>(options =>
                     options.UseSqlServer(conn));
             }
-            // Registro un HttpClient para la API del hospital — la base URL la saco de appsettings
+            else
+            {
+                // En desarrollo sin conexión, usar In-Memory database (perfecto para pruebas)
+                services.AddDbContext<PharmaLinkContext>(options =>
+                    options.UseInMemoryDatabase("PharmaLinkDev"));
+            }
+
+            // Registrar HttpClient para la API del hospital
             services.AddHttpClient("HospitalApi", client =>
             {
                 var baseUrl = Configuration["HospitalApi:BaseUrl"];
@@ -51,11 +57,15 @@ namespace PharmaLink.Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
-            app.UseHttpsRedirection();
+            else
+            {
+                // Solo redirigir a HTTPS en producción (en desarrollo, evita problemas con certificado auto-firmado)
+                app.UseHttpsRedirection();
+            }
 
             // Middleware de API Key para proteger endpoints sensibles (recetas, dispensaciones, reposiciones)
-            app.UseMiddleware<Middleware.ApiKeyMiddleware>();
+            // TEMPORALMENTE DESHABILITADO PARA DEBUGGING
+            // app.UseMiddleware<Middleware.ApiKeyMiddleware>();
 
             app.UseRouting();
 

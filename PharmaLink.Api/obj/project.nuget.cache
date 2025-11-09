@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+xNvnuekUQ0=",
+  "dgSpecHash": "22SIXVEJHmM=",
   "success": true,
-  "projectFilePath": "c:\\Users\\pipep\\Documents\\CosasUAP\\2doAño-SegundoCuatrimestre\\programacion2\\ProyectoAPI_Programacion\\PharmaLink.Api\\PharmaLink.Api.csproj",
+  "projectFilePath": "C:\\Users\\pipep\\Documents\\CosasUAP\\2doAño-SegundoCuatrimestre\\programacion2\\ProyectoAPI_Programacion\\PharmaLink.Api\\PharmaLink.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pipep\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\pipep\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
@@ -14,6 +14,7 @@
     "C:\\Users\\pipep\\.nuget\\packages\\microsoft.entityframeworkcore\\8.0.21\\microsoft.entityframeworkcore.8.0.21.nupkg.sha512",
     "C:\\Users\\pipep\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\8.0.21\\microsoft.entityframeworkcore.abstractions.8.0.21.nupkg.sha512",
     "C:\\Users\\pipep\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\8.0.21\\microsoft.entityframeworkcore.analyzers.8.0.21.nupkg.sha512",
+    "C:\\Users\\pipep\\.nuget\\packages\\microsoft.entityframeworkcore.inmemory\\8.0.21\\microsoft.entityframeworkcore.inmemory.8.0.21.nupkg.sha512",
     "C:\\Users\\pipep\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\8.0.21\\microsoft.entityframeworkcore.relational.8.0.21.nupkg.sha512",
     "C:\\Users\\pipep\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\8.0.21\\microsoft.entityframeworkcore.sqlserver.8.0.21.nupkg.sha512",
     "C:\\Users\\pipep\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
