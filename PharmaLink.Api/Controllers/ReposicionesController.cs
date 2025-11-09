@@ -27,6 +27,13 @@ namespace PharmaLink.Api.Controllers
                 return BadRequest(new ErrorResponse { Code = "invalid_request", Message = "Pedido inválido" });
             }
 
+            // Generar PedidoId interno si no vino en el JSON
+            if (string.IsNullOrWhiteSpace(pedido.PedidoId))
+            {
+                // Formato simple PED-<8 chars>
+                pedido.PedidoId = $"PED-{Guid.NewGuid().ToString("N").Substring(0,8).ToUpper()}";
+            }
+
             var resumenItems = new List<object>();
             int totalItems = 0;
             int totalConfirmed = 0;
@@ -70,7 +77,9 @@ namespace PharmaLink.Api.Controllers
             {
                 PedidoId = pedido.PedidoId,
                 Status = status,
-                Items = resumenItems
+                Items = resumenItems,
+                TotalSolicitado = pedido.Items.Sum(i => i.CantidadSolicitada),
+                TotalConfirmado = totalConfirmed
             };
 
             return Ok(response);

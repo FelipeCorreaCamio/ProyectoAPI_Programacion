@@ -4,8 +4,8 @@ namespace PharmaLink.Api.Models.Dto
 {
     public class ConfirmacionEnvioDto
     {
-        [Required]
-        public string PedidoId { get; set; } = string.Empty;
+        // PedidoId es opcional (el hospital puede no enviarlo)
+        public string? PedidoId { get; set; }
 
         public DateTime FechaEnvio { get; set; }
 

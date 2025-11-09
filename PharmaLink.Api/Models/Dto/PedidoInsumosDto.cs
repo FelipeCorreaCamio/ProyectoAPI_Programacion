@@ -4,8 +4,8 @@ namespace PharmaLink.Api.Models.Dto
 {
     public class PedidoInsumosDto
     {
-        [Required]
-        public string PedidoId { get; set; } = string.Empty;
+        // PedidoId pasa a ser opcional: si no viene, la API genera uno interno
+        public string? PedidoId { get; set; }
 
         [Required]
         public string HospitalId { get; set; } = string.Empty;
@@ -16,8 +16,8 @@ namespace PharmaLink.Api.Models.Dto
         [MinLength(1)]
         public List<PedidoItemDto> Items { get; set; } = new();
 
-        [Required]
-        public ContactoDto Contacto { get; set; } = new();
+    [Required]
+    public ContactoDto Contacto { get; set; } = new();
     }
 
     public class PedidoItemDto
