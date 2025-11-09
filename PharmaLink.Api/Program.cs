@@ -30,6 +30,17 @@ using (var scope = app.Services.CreateScope())
         var ctx = scope.ServiceProvider.GetRequiredService<PharmaLinkContext>();
         var cfg = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
+        // Asegurar que la base exista y tenga migraciones aplicadas (auto-migrate)
+        try
+        {
+            ctx.Database.Migrate();
+        }
+        catch (Exception mex)
+        {
+            var logger = scope.ServiceProvider.GetService<ILogger<Program>>();
+            logger?.LogError(mex, "Error aplicando migraciones automáticamente");
+        }
+
         // InMemory o Demo:SeedOnStart => sembrar
         var isInMemory = ctx.Database.ProviderName?.Contains("InMemory", StringComparison.OrdinalIgnoreCase) == true;
         var seedOnStart = cfg.GetValue<bool>("Demo:SeedOnStart");

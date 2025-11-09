@@ -26,9 +26,13 @@ run_api.ps1
 start_api.ps1
 
 # Base de datos SQLite local
+# Si querés versionar un snapshot inicial para que otro equipo arranque con datos,
+# descomenta la línea correspondiente. Por defecto se ignora para evitar subir datos reales.
+# !pharmalink.db   <-- QUITAR el # para incluir el archivo
 pharmalink.db
 pharmalink.db-shm
 pharmalink.db-wal
+!pharmalink.db
 
 # Archivo docs vacío no usado
 Docs/Endpoints.cs
