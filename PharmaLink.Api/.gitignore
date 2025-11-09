@@ -1,0 +1,26 @@
+# Build output
+bin/
+obj/
+
+# VS / Rider / tooling
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+logs/
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Dotnet artifacts
+*.ide
+**/Properties/launchSettings.json
+
+# Ignore local scripts except the canonical run.ps1
+run_api.ps1
+start_api.ps1
