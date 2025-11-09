@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PharmaLink.Data;
+using System.IO;
 
 namespace PharmaLink.Api
 {
@@ -23,7 +24,7 @@ namespace PharmaLink.Api
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            // Registrar DbContext — si no hay connection string, usar InMemory (para desarrollo/pruebas)
+            // Registrar DbContext — intenta usar ConnectionString; si no hay, fallback inteligente
             var conn = Configuration.GetConnectionString("DefaultConnection");
             if (!string.IsNullOrWhiteSpace(conn))
             {
@@ -41,9 +42,19 @@ namespace PharmaLink.Api
             }
             else
             {
-                // En desarrollo sin conexión, usar InMemory (rápido para pruebas unitarias)
-                services.AddDbContext<PharmaLinkContext>(options =>
-                    options.UseInMemoryDatabase("PharmaLinkDev"));
+                // Sin connection string: si existe pharmalink.db, usar SQLite; si no, InMemory
+                var sqliteFileInCwd = Path.Combine(Directory.GetCurrentDirectory(), "pharmalink.db");
+                var sqliteFileInBase = Path.Combine(AppContext.BaseDirectory, "pharmalink.db");
+                if (File.Exists(sqliteFileInCwd) || File.Exists(sqliteFileInBase))
+                {
+                    services.AddDbContext<PharmaLinkContext>(options =>
+                        options.UseSqlite("Data Source=pharmalink.db"));
+                }
+                else
+                {
+                    services.AddDbContext<PharmaLinkContext>(options =>
+                        options.UseInMemoryDatabase("PharmaLinkDev"));
+                }
             }
 
             // Registrar HttpClient para la API del hospital
@@ -60,30 +71,19 @@ namespace PharmaLink.Api
     // Método para configurar la tubería HTTP (middlewares, routing, etc.). Aquí pongo swagger, https, auth, etc.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-            else
-            {
-                // Solo redirigir a HTTPS en producción (en desarrollo, evita problemas con certificado auto-firmado)
-                app.UseHttpsRedirection();
-            }
+            // Quitar si no escuchamos en https
+            // app.UseHttpsRedirection();
 
-            // Middleware de API Key para proteger endpoints sensibles (recetas, dispensaciones, reposiciones)
-            // TEMPORALMENTE DESHABILITADO PARA DEBUGGING
-            // app.UseMiddleware<Middleware.ApiKeyMiddleware>();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PharmaLink API v1");
+                c.RoutePrefix = "swagger";
+            });
 
             app.UseRouting();
-
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }
