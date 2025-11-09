@@ -25,14 +25,23 @@ namespace PharmaLink.Api
 
             // Registrar DbContext — si no hay connection string, usar InMemory (para desarrollo/pruebas)
             var conn = Configuration.GetConnectionString("DefaultConnection");
-            if (!string.IsNullOrEmpty(conn))
+            if (!string.IsNullOrWhiteSpace(conn))
             {
-                services.AddDbContext<PharmaLinkContext>(options =>
-                    options.UseSqlServer(conn));
+                // Detectar si la cadena apunta a SQLite (ej: termina en .db o contiene Data Source=)
+                if (conn.Contains(".db", StringComparison.OrdinalIgnoreCase) || conn.Contains("Data Source=", StringComparison.OrdinalIgnoreCase))
+                {
+                    services.AddDbContext<PharmaLinkContext>(options =>
+                        options.UseSqlite(conn));
+                }
+                else
+                {
+                    services.AddDbContext<PharmaLinkContext>(options =>
+                        options.UseSqlServer(conn));
+                }
             }
             else
             {
-                // En desarrollo sin conexión, usar In-Memory database (perfecto para pruebas)
+                // En desarrollo sin conexión, usar InMemory (rápido para pruebas unitarias)
                 services.AddDbContext<PharmaLinkContext>(options =>
                     options.UseInMemoryDatabase("PharmaLinkDev"));
             }

@@ -21,6 +21,14 @@ Thumbs.db
 *.ide
 **/Properties/launchSettings.json
 
-# Ignore local scripts except the canonical run.ps1
+# Scripts locales (si aparecen se ignoran)
 run_api.ps1
 start_api.ps1
+
+# Base de datos SQLite local
+pharmalink.db
+pharmalink.db-shm
+pharmalink.db-wal
+
+# Archivo docs vacío no usado
+Docs/Endpoints.cs
