@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-
+using PharmaLink.Api.Models.Dto;
 namespace PharmaLink.Api.Controllers
 {
     [ApiController]
@@ -20,44 +20,44 @@ namespace PharmaLink.Api.Controllers
         }
 
     // Validar receta (POST api/recetas/validate) — le pedimos al hospital que confirme si la receta está ok
-        [HttpPost("validate")]
-        public async Task<IActionResult> Validate([FromBody] JsonElement body)
-        {
-            if (!body.TryGetProperty("codigoReceta", out var codigoElem))
-                return BadRequest(new { code = "missing_field", message = "codigoReceta is required" });
+       
+    [HttpPost("validate")]
+    public async Task<IActionResult> Validate([FromBody] ValidacionRecetaRequestDto dto)
+    {
+        if (dto == null || string.IsNullOrWhiteSpace(dto.CodigoReceta))
+            return BadRequest(new { code = "invalid_request", message = "codigoReceta requerido" });
 
-            var codigo = codigoElem.GetString();
+        try
+        {
             var baseUrl = _configuration["HospitalApi:BaseUrl"];
-            if (string.IsNullOrEmpty(baseUrl))
-            {
-                return StatusCode(503, new { code = "hospital_api_unconfigured", message = "Hospital API not configured" });
-            }
+            var validatePath = _configuration["HospitalApi:ValidatePath"] ?? "/api/Receta/validar-externa";
+
+            if (string.IsNullOrWhiteSpace(baseUrl))
+                return Ok(new { codigoReceta = dto.CodigoReceta, valida = true, origen = "mock" });
 
             var client = _httpClientFactory.CreateClient("HospitalApi");
 
-            // Ejemplo: GET /recetas/{codigo}/validate — la ruta real depende de cómo lo haga el grupo del hospital
-            var resp = await client.GetAsync($"/recetas/{codigo}/validate");
+            // Construir payload externo
+            var payload = JsonSerializer.Serialize(new { codigoReceta = dto.CodigoReceta });
+            using var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
+
+            // POST externo
+            var resp = await client.PostAsync(validatePath, content);
+
             if (!resp.IsSuccessStatusCode)
-            {
-                return StatusCode((int)resp.StatusCode, new { code = "hospital_api_error", message = "Error contacting hospital API" });
-            }
+                return BadRequest(new { code = "recipe_invalid", message = "Receta no válida o no encontrada" });
 
-            var content = await resp.Content.ReadAsStringAsync();
-            // Intento parsear la respuesta flexible que mande el hospital (puede variar)
-            try
-            {
-                var doc = JsonDocument.Parse(content);
-                if (doc.RootElement.TryGetProperty("valid", out var validEl) && validEl.GetBoolean())
-                {
-                    return Ok(new { valid = true });
-                }
-            }
-            catch
-            {
-                // si no trae lo que esperamos, seguimos y devolvemos invalid
-            }
-
-            return BadRequest(new { valid = false });
+            var json = await resp.Content.ReadAsStringAsync();
+            return Content(json, "application/json");
         }
+        catch (HttpRequestException ex)
+        {
+            return StatusCode(502, new { code = "hospital_unavailable", message = "No se pudo contactar al hospital", detail = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { code = "unexpected_error", message = "Error inesperado", detail = ex.Message });
+        }
+    }
     }
 }

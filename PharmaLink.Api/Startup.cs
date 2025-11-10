@@ -58,17 +58,20 @@ namespace PharmaLink.Api
             }
 
             // Registrar HttpClient para la API del hospital
-            services.AddHttpClient("HospitalApi", client =>
+            services.AddHttpClient("HospitalApi", (sp, client) =>
             {
-                var baseUrl = Configuration["HospitalApi:BaseUrl"];
-                if (!string.IsNullOrEmpty(baseUrl))
-                {
-                    client.BaseAddress = new System.Uri(baseUrl);
-                }
+                var cfg = sp.GetRequiredService<IConfiguration>();
+                var baseUrl = cfg["HospitalApi:BaseUrl"];
+                if (!string.IsNullOrWhiteSpace(baseUrl))
+                    client.BaseAddress = new Uri(baseUrl);
+
+                var apiKey = cfg["HospitalApi:ApiKey"];
+                if (!string.IsNullOrEmpty(apiKey))
+                    client.DefaultRequestHeaders.TryAddWithoutValidation("X-API-KEY", apiKey);
             });
         }
 
-    // Método para configurar la tubería HTTP (middlewares, routing, etc.). Aquí pongo swagger, https, auth, etc.
+        // Método para configurar la tubería HTTP (middlewares, routing, etc.). Aquí pongo swagger, https, auth, etc.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // Quitar si no escuchamos en https
